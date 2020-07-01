@@ -52,6 +52,7 @@ def checkLegalMoves(board):
 	return legalMoves
 
 ## win = +1 draw = +1/2 lose = 0
+### figure out how many loops to do
 def playout(board,legalMoves,OGmark,movenum,order):
 	scoring = {}
 	for i in legalMoves:
@@ -61,84 +62,90 @@ def playout(board,legalMoves,OGmark,movenum,order):
 		print("-"*32)
 		print("This legal move: " + str(i))
 		print("-"*32)
-		simBoard = copy.deepcopy(board)
+		#simBoard = copy.deepcopy(board)
 		### for loop running however many tests
-		inMoveNum = movenum
-		simBoard = updateBoard(simBoard,OGmark,i)
-		inMoveNum += 1
-		haveWinner = checkVictory(simBoard)
 
-		if(order == 1):
-			haveWinner = False
-			while(not haveWinner and inMoveNum != 9):
+		# inMoveNum = movenum
+		# simBoard = updateBoard(simBoard,OGmark,i)
+		# inMoveNum += 1
+		# haveWinner = checkVictory(simBoard)
+		for totalPlayouts in range(100):
+			simBoard = copy.deepcopy(board)
+			inMoveNum = movenum
+			simBoard = updateBoard(simBoard,OGmark,i)
+			inMoveNum += 1
+			haveWinner = checkVictory(simBoard)
+			if(order == 1):
+				#haveWinner = False
+				while(not haveWinner and inMoveNum != 9):
+					printBoard(simBoard)
+					if(inMoveNum % 2 == 0):
+						#computer turn
+						mark = 'O'
+						inlegalMoves = checkLegalMoves(simBoard)
+						print(inlegalMoves)
+						print("Simulated O")
+						simBoard = updateBoard(simBoard,mark,r.choice(inlegalMoves))
+						inMoveNum += 1
+						haveWinner = checkVictory(simBoard)
+					else:
+						#human turn
+						mark = 'X'
+						inlegalMoves = checkLegalMoves(simBoard)
+						print(inlegalMoves)
+						print("Simulated X")
+						simBoard = updateBoard(simBoard,mark,r.choice(inlegalMoves))
+						inMoveNum += 1
+						haveWinner = checkVictory(simBoard)
 				printBoard(simBoard)
-				if(inMoveNum % 2 == 0):
-					#computer turn
-					mark = 'O'
-					inlegalMoves = checkLegalMoves(simBoard)
-					print(inlegalMoves)
-					print("Simulated O")
-					simBoard = updateBoard(simBoard,mark,r.choice(inlegalMoves))
-					inMoveNum += 1
-					haveWinner = checkVictory(simBoard)
-				else:
-					#human turn
-					mark = 'X'
-					inlegalMoves = checkLegalMoves(simBoard)
-					print(inlegalMoves)
-					print("Simulated X")
-					simBoard = updateBoard(simBoard,mark,r.choice(inlegalMoves))
-					inMoveNum += 1
-					haveWinner = checkVictory(simBoard)
-			printBoard(simBoard)
-			print("-"*10+"Result"+"-"*10)
-			if(not haveWinner):
-				print("Draw " + str(i))
-				scoring[i] += 0.5
-			elif(inMoveNum % 2 == 0):
-				print("Loss " + str(i))
-			elif(inMoveNum % 2 == 1):
-				print("Win " + str(i))
-				scoring[i] += 1
-			print("-"*10+"Result"+"-"*10)
-		elif(order == 2):
-			haveWinner = False
-			while(not haveWinner and inMoveNum != 9):
+				print("-"*10+"Result"+"-"*10)
+				if(not haveWinner):
+					print("Draw " + str(i))
+					scoring[i] += 0.5
+				elif(inMoveNum % 2 == 0):
+					print("Loss " + str(i))
+				elif(inMoveNum % 2 == 1):
+					print("Win " + str(i))
+					scoring[i] += 1
+				print("-"*10+"Result"+"-"*10)
+			elif(order == 2):
+				#haveWinner = False
+				while(not haveWinner and inMoveNum != 9):
+					printBoard(simBoard)
+					if(inMoveNum % 2 == 0):
+						#computer turn
+						mark = 'O'
+						inlegalMoves = checkLegalMoves(simBoard)
+						print(inlegalMoves)
+						print("Simulated O")
+						simBoard = updateBoard(simBoard,mark,r.choice(inlegalMoves))
+						inMoveNum += 1
+						haveWinner = checkVictory(simBoard)
+					else:
+						#human turn
+						mark = 'X'
+						inlegalMoves = checkLegalMoves(simBoard)
+						print(inlegalMoves)
+						print("Simulated X")
+						simBoard = updateBoard(simBoard,mark,r.choice(inlegalMoves))
+						inMoveNum += 1
+						haveWinner = checkVictory(simBoard)
 				printBoard(simBoard)
-				if(inMoveNum % 2 == 0):
-					#computer turn
-					mark = 'O'
-					inlegalMoves = checkLegalMoves(simBoard)
-					print(inlegalMoves)
-					print("Simulated O")
-					simBoard = updateBoard(simBoard,mark,r.choice(inlegalMoves))
-					inMoveNum += 1
-					haveWinner = checkVictory(simBoard)
-				else:
-					#human turn
-					mark = 'X'
-					inlegalMoves = checkLegalMoves(simBoard)
-					print(inlegalMoves)
-					print("Simulated X")
-					simBoard = updateBoard(simBoard,mark,r.choice(inlegalMoves))
-					inMoveNum += 1
-					haveWinner = checkVictory(simBoard)
-			printBoard(simBoard)
-			print("-"*10+"Result"+"-"*10)
-			if(not haveWinner):
-				print("Draw " + str(i))
-				scoring[i] += 0.5
-			elif(inMoveNum % 2 == 0):
-				print("Win " + str(i))
-				scoring[i] += 1
-			elif(inMoveNum % 2 == 1):
-				print("Loss " + str(i))
-			print("-"*10+"Result"+"-"*10)
+				print("-"*10+"Result"+"-"*10)
+				if(not haveWinner):
+					print("Draw " + str(i))
+					scoring[i] += 0.5
+				elif(inMoveNum % 2 == 0):
+					print("Win " + str(i))
+					scoring[i] += 1
+				elif(inMoveNum % 2 == 1):
+					print("Loss " + str(i))
+				print("-"*10+"Result"+"-"*10)
 	print(scoring)
 	maximum = max(scoring,key=scoring.get)
 	print("MAX: " + str(maximum))
 
-	return
+	return maximum
 
 def playOrder():
 	return r.choice([1,2])
@@ -157,9 +164,9 @@ def game(order):
 				print(legalMoves)
 				print("Computer")
 
-				playout(newBoard,legalMoves,mark,movenum,order)
+				bestMove = playout(newBoard,legalMoves,mark,movenum,order)
 
-				newBoard = updateBoard(newBoard,mark,r.choice(legalMoves))
+				newBoard = updateBoard(newBoard,mark,bestMove)
 				movenum += 1
 				haveWinner = checkVictory(newBoard)
 			else:
@@ -193,9 +200,9 @@ def game(order):
 				print(legalMoves)
 				print("Computer")
 
-				playout(newBoard,legalMoves,mark,movenum,order)
+				bestMove = playout(newBoard,legalMoves,mark,movenum,order)
 
-				newBoard = updateBoard(newBoard,mark,r.choice(legalMoves))
+				newBoard = updateBoard(newBoard,mark,bestMove)
 				movenum += 1
 				haveWinner = checkVictory(newBoard)
 		printBoard(newBoard)
