@@ -129,7 +129,7 @@ while True:
 		if(not Error):
 			print()
 			print("\t" +str(count) + " new rule(s) added")
-			print(knowledgeBase)
+			#print(knowledgeBase)
 
 		file.close()
 
@@ -151,7 +151,7 @@ while True:
 					for attempt in attemptList:
 						tellList.remove(attempt)
 					Error = True
-					print(tellList)
+					#print(tellList)
 					break
 				
 				if(atom not in tellList):
@@ -170,9 +170,9 @@ while True:
 					for attempt in attemptList:
 						tellList.remove(attempt)
 					Error = True
-					print(tellList)
+					#print(tellList)
 				else:
-					print(text[oldspacePos:])
+					#print(text[oldspacePos:])
 					tellList.append(str(text[oldspacePos:]))
 					for a in tellList:
 						print("\""+ str(a) + "\" added to KB")
@@ -195,15 +195,16 @@ while True:
 			rules = knowledgeBase[b]
 			# none of the inferred rules
 			### iterate through inferList
-			if(head != inferList[0] and rules != True):
-				# print(head)
-				# print(rules)
-				# print(head in inferList[0])
-				# print(inferList[0] in rules)
-				if(head in inferList[0]):
-					inferList.append(head)
-				if(inferList[0] in rules):
-					knowledgeBase[b][inferList[0]] = True
+			for i in inferList:
+				if(head != i and rules != True):
+					# print(head)
+					# print(rules)
+					# print(head in inferList[0])
+					# print(inferList[0] in rules)
+					if(head in i):
+						inferList.append(head)
+					if(i in rules):
+						knowledgeBase[b][i] = True
 		### check if all rules are true then add to the inferList
 		for key in knowledgeBase:
 			#print(knowledgeBase[key])
@@ -227,7 +228,15 @@ while True:
 		print()
 
 		inferList.extend(C)
-		print(knowledgeBase)
+
+		for d in knowledgeBase:
+			for val in C:
+				if(knowledgeBase[d] != True):
+					if(val in knowledgeBase[d]):
+						knowledgeBase[d][val] = True
+
+		#print(knowledgeBase)
+
 
 		# 	if(a in knowledgeBase.keys()):
 		# 		print(knowledgeBase[a])
