@@ -30,6 +30,7 @@ def is_letter(s):
 knowledgeBase = {}
 file = ''
 tellList = []
+inferList = []
 
 
 # parse the line to grab the atoms
@@ -175,13 +176,73 @@ while True:
 					tellList.append(str(text[oldspacePos:]))
 					for a in tellList:
 						print("\""+ str(a) + "\" added to KB")
+						knowledgeBase[a] = True
 
 
 		attemptList = []				
 
 	elif(text[:9] == "infer_all"):
-		for a in tellList:
-			if(a in knowledgeBase.keys()):
+		C = []
+		for a in knowledgeBase:
+			head = a
+			rules = knowledgeBase[a]
+			# print(head,end=" ")
+			# print(rules)
+			if(rules == True):
+				inferList.append(head)
+		for b in knowledgeBase:
+			head = b
+			rules = knowledgeBase[b]
+			# none of the inferred rules
+			### iterate through inferList
+			if(head != inferList[0] and rules != True):
+				# print(head)
+				# print(rules)
+				# print(head in inferList[0])
+				# print(inferList[0] in rules)
+				if(head in inferList[0]):
+					inferList.append(head)
+				if(inferList[0] in rules):
+					knowledgeBase[b][inferList[0]] = True
+		### check if all rules are true then add to the inferList
+		for key in knowledgeBase:
+			#print(knowledgeBase[key])
+			if(knowledgeBase[key] != True):
+				for value in knowledgeBase[key]:
+					if(knowledgeBase[key][value] != True):
+						break
+					C.append(key)
+					#print(inferList)
+					#print(C)
+		print("Newly inferred atoms:")
+		if(not C):
+			print("<none>")
+		else:
+			for val in C:
+				print(val,end=" ")
+			print()
+		print("Atoms already known to be true:")
+		for val in inferList:
+			print(val,end=" ")
+		print()
+
+		inferList.extend(C)
+		print(knowledgeBase)
+
+		# 	if(a in knowledgeBase.keys()):
+		# 		print(knowledgeBase[a])
+		# 		for key in knowledgeBase[a]:
+		# 			knowledgeBase[a][key] = True
+		# 			print(key)
+
+		# 	if(a not in knowledgeBase.keys()):
+		# 		for key in knowledgeBase:
+		# 			for value in knowledgeBase[key]:
+		# 				if(value == a):
+		# 					knowledgeBase[key][value] = True
+		#print(knowledgeBase)
+
+
 			### WORK ON INFER ALL go through tellList and change values in knowledgeBase to True.
 			### check which keys in knowledgeBase has values of all True to determine what was inferred
 
