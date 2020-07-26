@@ -182,7 +182,8 @@ while True:
 	elif(text[:9] == "infer_all"):
 		for a in tellList:
 			if(a in knowledgeBase.keys()):
-			### WORK ON INFER ALL
+			### WORK ON INFER ALL go through tellList and change values in knowledgeBase to True.
+			### check which keys in knowledgeBase has values of all True to determine what was inferred
 
 
 
